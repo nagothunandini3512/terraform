@@ -60,7 +60,7 @@ This provisions (including the ArgoCD install and ArgoCD `Application` resources
 - ArgoCD installation
 - ArgoCD `Application` CRD(s)
 
-> ⚠️ **Manual `terraform apply` is only for break-glass/emergency use** (e.g. CI/CD is down at 2am and you must act now). If you do run it manually, immediately follow up by re-running it through the pipeline once it's back up, so pipeline state and actual cluster state don't drift apart. Always check `terraform plan` output carefully before an emergency manual apply — you're bypassing whatever safety checks the pipeline normally runs.
+> **Manual `terraform apply` is only for break-glass/emergency use** (e.g. CI/CD is down at 2am and you must act now). If you do run it manually, immediately follow up by re-running it through the pipeline once it's back up, so pipeline state and actual cluster state don't drift apart. Always check `terraform plan` output carefully before an emergency manual apply — you're bypassing whatever safety checks the pipeline normally runs.
 
 Once the pipeline reports success, update your local kubeconfig to inspect the cluster:
 ```bash
@@ -132,7 +132,7 @@ Process per environment:
 
 ### 4.1 Access the Application
 Terraform outputs the Application Load Balancer (ALB) URL after apply. Open it in a browser.
-- ✅ TwentyCRM login page loads → deployment successful.
+- TwentyCRM login page loads → deployment successful.
 
 ### 4.2 Verify via ArgoCD Dashboard
 Terraform also outputs the ArgoCD Load Balancer URL. Log in with the initial admin credentials (from the Kubernetes secret):
