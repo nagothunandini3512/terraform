@@ -19,11 +19,11 @@ Deploying TwentyCRM to our EKS cluster(s) via Terraform + ArgoCD (GitOps). This 
 - Runbook: `RUNBOOK.md` — https://github.com/nagothunandini3512/terraform/blob/main/RUNBOOK.md
 - Terraform repo: https://github.com/nagothunandini3512/terraform.git
 
-**⚠️ Risks / things to watch:**
+** Risks / things to watch:**
 - First rollout of the CI/CD-driven Terraform apply for this app — flagging in case pipeline behaves unexpectedly
 - IRSA / IngressClass misconfig is the most common failure mode for this stack (see runbook § Troubleshooting) — watch for ALB provisioning issues post-deploy
 - Rollback is Git-revert based (not instant) — ArgoCD history rollback available as a faster stopgap if needed
 
-**🙋 Who to contact if something breaks:**
+** Who to contact if something breaks:**
 - Primary: *Nandini*
 To know more about code please refer to readme.md or terraform docs and github actions docs
