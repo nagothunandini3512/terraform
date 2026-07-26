@@ -13,7 +13,3 @@ output "argocd_url" {
   value = module.argocd.argocd_server_lb_hostname
 }
 
-output "argocd_admin_password" {
-  value     = module.argocd.argocd_admin_password
-  sensitive = true
-}
