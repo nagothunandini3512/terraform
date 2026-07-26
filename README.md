@@ -56,29 +56,29 @@ It authenticates to AWS using **OIDC** (`role-to-assume`) — no static AWS keys
 
 **1. Environment isolation — separate directories instead of Terraform Workspaces**
 Decision: `dev/`, `staging/`, `prod/` as separate root modules, not Workspaces.
-- ✅ Better isolation — each environment has its own backend config and state file; a mistake in Dev's state or backend can't touch Production.
-- ✅ Easier to apply different variables, modules, and IAM permissions per environment.
-- ❌ Slightly more code duplication than Workspaces would have.
+-  Better isolation — each environment has its own backend config and state file; a mistake in Dev's state or backend can't touch Production.
+-  Easier to apply different variables, modules, and IAM permissions per environment.
+-  Slightly more code duplication than Workspaces would have.
 - **Why I chose it:** I prioritized environment isolation and operational safety over reducing duplication.
 
 **2. Separate Terraform state per environment**
 Decision: a separate S3 backend bucket per environment.
-- ✅ Production state is completely isolated from Dev.
-- ✅ Reduced blast radius if a backend is ever misconfigured.
-- ✅ Easier backup, recovery, and access control per environment.
-- ❌ More backend resources to manage.
+-  Production state is completely isolated from Dev.
+-  Reduced blast radius if a backend is ever misconfigured.
+-  Easier backup, recovery, and access control per environment.
+-  More backend resources to manage.
 
 **3. Destroy protection**
 Decision: environment isolation plus `prevent_destroy` on the state bucket lifecycle.
-- ✅ Running `terraform destroy` in Dev can't cascade into Staging or Production.
-- ❌ Each environment has to be destroyed separately — no single command tears everything down.
+-  Running `terraform destroy` in Dev can't cascade into Staging or Production.
+-  Each environment has to be destroyed separately — no single command tears everything down.
 
 
 **4. Single combined GitHub Actions workflow (matrix), not path-based triggers**
 Decision: one workflow runs a `dev`/`staging`/`production` matrix on every PR, rather than three workflows scoped to `dev/**`, `staging/**`, `prod/**` paths.
-- ✅ Simple to reason about — one workflow file, one place to review CI logic.
-- ✅ Every PR gets a plan for all three environments, so reviewers always see the full picture.
-- ❌ Runs plans for environments that weren't actually touched by a given PR, which costs extra CI time/minutes as the project grows.
+-  Simple to reason about — one workflow file, one place to review CI logic.
+-  Every PR gets a plan for all three environments, so reviewers always see the full picture.
+-  Runs plans for environments that weren't actually touched by a given PR, which costs extra CI time/minutes as the project grows.
 ---
 
 ## 5. What I would change for real production
