@@ -24,7 +24,7 @@ module "eks" {
   environment              = var.environment
   vpc_id                   = module.vpc.vpc_id
   private_subnets          = module.vpc.private_subnet_ids
-
+  ebs_csi_role_arn         = module.iam.ebs_csi_driver_arn
   managed_node_groups = var.managed_node_groups
 
   depends_on = [module.vpc]
