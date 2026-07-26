@@ -9,11 +9,12 @@ env:
   LOGIN_TOKEN_EXPIRES_IN: 1h
 
 secrets:
-  appToken: "TueRippCNQYc190gdeAABwwxVdMfpl07uwNFjFQ0CtE="
-  accessToken: "U9U0IbuNBiaUM4M7PTKqmXX3R1a/xHWGEsC7wSbJnA8="
-  loginToken: "wjVNy5+MZJ4WeRSe+GjF0TcJsD0bYG158ttKjulWVPo="
-  refreshToken: "HRppVAOuJtCVCd51EaJ8VIE+ybpRmDfuODjESE2x9jk="
-  fileToken: "4r7zZyaY9/35pd8o3BMf6sWLlLr5dqOsFOLhk9yiY0g="
+  appToken: <app-token>
+  accessToken: <access-token>
+  loginToken: <login-token>
+  refreshToken: <refresh-token>
+  fileToken: <file-token>
+
 
 
 server:
