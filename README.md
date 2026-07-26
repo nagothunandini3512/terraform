@@ -38,8 +38,8 @@ Each environment — dev, staging, production — has its own Terraform root mod
 ```bash
 cd environments/dev        # or staging / production
 terraform init
-terraform plan  -var-file=terraform.tfvars
-terraform apply -var-file=terraform.tfvars
+terraform plan 
+terraform apply 
 ```
 
 **CI/CD:** a GitHub Actions workflow triggers on every pull request and runs a matrix job across all three environments in parallel:
