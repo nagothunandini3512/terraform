@@ -57,7 +57,7 @@ module "alb" {
 }
 
 module "argocd" {
-  source = "../../modules/argocd"
-
-  depends_on = [module.eks]
+  source      = "../../modules/argocd"
+  environment = var.environment
+  depends_on  = [module.eks]
 }

@@ -31,7 +31,7 @@ resource "kubectl_manifest" "twentycrm_app" {
           targetRevision = "0.2.0"
           helm = {
             valueFiles = [
-              "$values/app/values.yaml"
+              "$values/app/${var.environment}-values.yaml"
             ]
           }
         },
