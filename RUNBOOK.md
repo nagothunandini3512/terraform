@@ -39,7 +39,7 @@ Before deploying, make sure you have the following in place.
 ## 2. Step-by-Step Deployment Instructions
 
 ```bash
-cd <req-environment for example dev, staging, production
+cd <req-environment for example dev, staging, production>
 terraform init
 terraform plan -out=tfplan
 terraform apply
