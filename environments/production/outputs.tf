@@ -15,5 +15,5 @@ output "argocd_url" {
 }
 
 output "argocd_admin_password" {
-  value     = module.argocd.argocd_admin_password
-
+  value = module.argocd.argocd_admin_password
+}

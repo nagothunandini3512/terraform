@@ -35,8 +35,8 @@ module "eks" {
     eks-pod-identity-agent = { before_compute = true }
     aws-ebs-csi-driver = {
       pod_identity_association = [{
-      role_arn        = var.ebs_csi_role_arn
-      service_account = "ebs-csi-controller-sa"
+        role_arn        = var.ebs_csi_role_arn
+        service_account = "ebs-csi-controller-sa"
       }]
     }
   }
