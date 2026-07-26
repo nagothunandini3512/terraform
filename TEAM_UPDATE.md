@@ -6,7 +6,6 @@
 
 **TwentyCRM Deployment — [Dev/Staging/Prod]**
 
-**What & why:**
 Deploying TwentyCRM to our EKS cluster(s) via Terraform + ArgoCD (GitOps). This gives us automated, auditable infra provisioning and continuous sync of app config from Git — no more manual `kubectl apply`.
 
 **🔧 Key changes / impact:**
