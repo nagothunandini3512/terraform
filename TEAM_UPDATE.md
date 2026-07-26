@@ -4,7 +4,7 @@
 
 ---
 
-📢 **TwentyCRM Deployment — [Dev/Staging/Prod]**
+**TwentyCRM Deployment — [Dev/Staging/Prod]**
 
 **What & why:**
 Deploying TwentyCRM to our EKS cluster(s) via Terraform + ArgoCD (GitOps). This gives us automated, auditable infra provisioning and continuous sync of app config from Git — no more manual `kubectl apply`.
@@ -15,20 +15,10 @@ Deploying TwentyCRM to our EKS cluster(s) via Terraform + ArgoCD (GitOps). This 
 - `terraform apply` now runs via CI/CD pipeline on merge, not manually from local machines
 - No expected downtime — rolling deploy, pods replaced gradually
 
-**🗓 Timeline:**
-| Env | Window | Notes |
-|---|---|---|
-| Dev | *[date/time]* | Already validated / validating now |
-| Staging | *[date/time]* | Pending dev sign-off |
-| Prod | *[date/time]* | Pending staging sign-off + change approval |
 
 **🔗 Links:**
-- PR: *[link to Terraform repo PR]*
-- Runbook: `RUNBOOK.md` — *[link]*
+- Runbook: `RUNBOOK.md` — https://github.com/nagothunandini3512/terraform/blob/main/RUNBOOK.md
 - Terraform repo: https://github.com/nagothunandini3512/terraform.git
-- ArgoCD dashboard: *[link]*
-- Monitoring / dashboards: *[link — Grafana/CloudWatch/etc.]*
-- Architecture doc: *[link, if available]*
 
 **⚠️ Risks / things to watch:**
 - First rollout of the CI/CD-driven Terraform apply for this app — flagging in case pipeline behaves unexpectedly
@@ -36,8 +26,5 @@ Deploying TwentyCRM to our EKS cluster(s) via Terraform + ArgoCD (GitOps). This 
 - Rollback is Git-revert based (not instant) — ArgoCD history rollback available as a faster stopgap if needed
 
 **🙋 Who to contact if something breaks:**
-- Primary: *[your name / @handle]*
-- Backup / on-call: *[name or on-call rotation link]*
-- Escalation: *[team channel, e.g. #eng-oncall]*
-
-_Full step-by-step deploy, verification, and rollback details are in `RUNBOOK.md`. Ping me with questions before/after the window._
+- Primary: *Nandini*
+To know more about code please refer to readme.md or terraform docs and github actions docs
