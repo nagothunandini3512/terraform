@@ -1,7 +1,6 @@
 # TwentyCRM Deployment Runbook
 
-**Purpose:** This runbook documents how to deploy, verify, and troubleshoot the TwentyCRM application on Amazon EKS using Terraform, ArgoCD (GitOps), and Helm. It is written so that anyone on-call — including someone deploying or firefighting at 2am with no prior context — can follow it end to end.
-
+**Purpose:** This runbook documents how to deploy, verify, and troubleshoot the TwentyCRM application on Amazon EKS using Terraform, ArgoCD (GitOps), and Helm. 
 **Infrastructure repo:** https://github.com/nagothunandini3512/terraform.git
 
 ---
@@ -39,22 +38,19 @@ Before deploying, make sure you have the following in place.
 
 ## 2. Step-by-Step Deployment Instructions
 
+```bash
+cd <req-environment for example dev, staging, production
+terraform init
+terraform plan -out=tfplan
+terraform apply
+```
+
 The deployment follows a GitOps model: Terraform provisions infrastructure once, then ArgoCD takes over continuous delivery of the application from Git.
 
 ### Step 1 — Provision Infrastructure (via CI/CD)
 Infrastructure is **not applied manually**. A CI/CD pipeline (triggered on push/merge to the Terraform repo) runs `terraform init`, `terraform plan`, and `terraform apply` automatically.
 
-```bash
-git clone https://github.com/nagothunandini3512/terraform.git
-cd terraform
-# Make your change, open a PR
-git checkout -b <branch-name>
-# ... edit .tf files ...
-git commit -am "describe the change"
-git push origin <branch-name>
-# Merge the PR -> CI/CD pipeline picks it up and runs terraform apply
-```
-To deploy: **push/merge to the tracked branch** and let the pipeline run. Check the pipeline logs (not your local terminal) to confirm `apply` succeeded.
+Check the pipeline logs  to confirm `apply` succeeded.
 
 This provisions (including the ArgoCD install and ArgoCD `Application` resources — see Step 3):
 - VPC, public/private subnets, NAT Gateway
@@ -72,7 +68,7 @@ aws eks update-kubeconfig --name <cluster-name> --region <aws-region>
 kubectl get nodes   # sanity check
 ```
 
-### Step 2 — Install ArgoCD on the EKS Cluster
+### Step 2 — Install ArgoCD on the EKS Cluster(via Terraform)
 ArgoCD is the GitOps controller: it continuously watches Git repositories and keeps the cluster in sync with the desired state. Confirm it's running:
 ```bash
 kubectl get pods -n argocd
@@ -87,7 +83,7 @@ The Terraform-managed `Application` resource references:
 - Helm Chart Version
 - The GitHub repo containing `values.yaml` as an **additional source**
 
-So Steps 3 and 4 from the original manual process happen automatically the moment the pipeline applies the Terraform config — there is nothing to do by hand here. If you need to change the chart version, repo URL, or values source, edit the relevant `.tf` file (e.g. the `argocd_application` / equivalent resource block) in the Terraform repo and push — the pipeline re-applies it.
+So Steps 3 and 4 from the original manual process happen automatically the moment the pipeline applies the Terraform config — there is nothing to do by manually here. If you need to change the chart version, repo URL, or values source, edit the relevant `.tf` file (e.g. the `modules/argocd/argocd_application` resource block) in the Terraform repo and push — the pipeline re-applies it.
 
 ### Step 4 — Custom Values (managed via Git, applied automatically)
 Once the Application resource exists (from Step 3), ArgoCD itself automatically:
@@ -110,7 +106,7 @@ ArgoCD will:
 The application is considered up once all pods reach `Running` state.
 
 ### Step 6 — Continuous GitOps Sync
-After initial deployment, ArgoCD continuously watches both the Helm chart repo and the `values.yaml` repo. Any change pushed to Git — image tag bumps, replica count changes, resource limit changes, env var updates, ingress changes — is automatically detected and synced to the cluster. **No manual `kubectl apply` is needed for routine changes; push to Git instead.**
+After initial deployment, ArgoCD continuously watches `values.yaml` repo. Any change pushed to Git — image tag bumps, replica count changes, resource limit changes, env var updates, ingress changes — is automatically detected and synced to the cluster. **No manual `kubectl apply` is needed for routine changes; push to Git instead.**
 
 ---
 
@@ -128,20 +124,15 @@ Process per environment:
 1. Terraform provisions a **dedicated EKS cluster** for that environment (from the Terraform repo, typically using an environment-specific `.tfvars` or workspace — check the repo for the exact variable naming before applying).
 2. ArgoCD is installed on that cluster.
 3. A separate ArgoCD Application is created for that environment.
-4. The Application references the same TwentyCRM Helm chart but points at that environment's values file (`Dev-values.yaml`, `Staging-values.yaml`, `Production-values.yaml`).
-
-> ⚠️ **2am checklist:** Before syncing anything, always confirm which cluster your `kubectl`/`argocd` context is pointed at. Deploying prod values to a dev cluster (or vice versa) is the most common late-night mistake — run `kubectl config current-context` and `argocd context` first.
+4. The Application references the same TwentyCRM Helm chart but points at concerned environment's values file (`Dev-values.yaml`, `Staging-values.yaml`, `Production-values.yaml`).
 
 ---
 
 ## 4. Verifying the Deployment
 
-Do all of the following — don't stop at the first green checkmark.
-
 ### 4.1 Access the Application
 Terraform outputs the Application Load Balancer (ALB) URL after apply. Open it in a browser.
 - ✅ TwentyCRM login page loads → deployment successful.
-- ❌ Inaccessible or error → move to Section 6 (Troubleshooting).
 
 ### 4.2 Verify via ArgoCD Dashboard
 Terraform also outputs the ArgoCD Load Balancer URL. Log in with the initial admin credentials (from the Kubernetes secret):
