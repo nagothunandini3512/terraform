@@ -1,6 +1,6 @@
 # TwentyCRM Deployment Runbook
 
-**Purpose:** This runbook documents how to deploy, verify, and troubleshoot the TwentyCRM application on Amazon EKS using Terraform, ArgoCD (GitOps), and Helm. 
+
 **Infrastructure repo:** https://github.com/nagothunandini3512/terraform.git
 
 ---
