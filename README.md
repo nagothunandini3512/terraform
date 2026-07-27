@@ -95,9 +95,6 @@ Decision: one workflow runs a `dev`/`staging`/`production` matrix on every PR, r
 - Automated backups.
 - **Velero** for EKS backup and restore.
 
-**Network isolation**
-- Instead of one VPC hosting all three environments, I'd typically use one VPC per environment (or per AWS account), each spanning multiple AZs — stronger isolation, and a routing/security change in one environment can never affect another.
-
 **Higher availability for EKS**
 - Current node counts are static: Dev 2, Staging 3, Prod 5.
 - I'd add **Cluster Autoscaler or Karpenter**, multiple managed node groups, **Pod Disruption Budgets**, and a **Horizontal Pod Autoscaler** so capacity actually responds to load instead of being fixed.
